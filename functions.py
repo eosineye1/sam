@@ -8,22 +8,15 @@ Created on Tue Jan 19 21:40:55 2021
 
 import pandas as pd
 
-def welcome():
+def welcome(ChatLog):
     print('\nHi, My name is Midac. That stands for Menu-Driven Interactive Data Analysis Chatbot')
     
 def doNotUnderstand():
     print('\nI did not understand. Please choose from the options below')
     
 def mainOptions():
-    print('\nThese are the main things I can do for you.')
-    print('(1) Clean data')
-    print('(2) Get a sample of the data')
-    print('(3) Get size of data')
-    print('(4) Create a chart')
-    print('(5) Select column(s)')
-    print('(6) Select row(s)')
-    print('(7) Perform Descriptive Statistics')
-    print('(0) Exit MIDAC ')
+    msg = 'These are the main things I can do for you.\n(1) Clean data\n(2) Get a sample of the data\n(3) Get size of data\n(4) Create a chart\n(5) Select column(s)\n(6) Select row(s)\n(7) Perform Descriptive Statistics\n(0) Exit MIDAC'
+    return msg
 
 def sampleOptions():
     print('\nSample options:')
@@ -40,6 +33,9 @@ def graphOptions():
     print('(4) Bar Chart')
     print('(5) Histogram')
     print('(0) Go Back')
+    
+def getInput():
+    return input().strip()
 
 
 #Select first n rows or Select last n rows
@@ -81,7 +77,9 @@ def selectAllColumnsAtLocations(locations, df):
 
 #Histogram for a specific column
 def plotHistogram(column, df):
-    return df[column].plot.hist()
+    import matplotlib.pyplot as plt
+    df[column].plot.hist()
+    plt.show()
 
 #Sum values of a specific object
 def getSumOfColumn(column, df):
@@ -232,7 +230,181 @@ def runLength(df):
         elif 'back' in response or 'end' in response or 'exit' in response or 'no' in response or response == '0':
             break
         else:
-            doNotUnderstand()          
+            doNotUnderstand()        
+
+
+def runGraph(df):
+    while True:
+        graphOptions()
+        response = getInput()
+        if 'pie' in response or response == '1':        
+            while True:
+                print('\nWhat column do you want the pie chart to display?')
+                print('(1) To see all column names, just let me know')
+                print('(0) Go back')
+                response = getInput()
+                columnNames = getDataColumnNames(df)
+                
+                if response in columnNames:
+                    try:
+                        int(df[response][0])
+                        print('\nHere is your pie chart:')
+                        df.set_index("Name", inplace = True)
+                        plotPieChart(response, 5, 5, df)
+                        break                  
+                    except:
+                        print('\nThe column selected does not contain numbers')
+                elif 'column' in response or response == '1':
+                    print(columnNames)
+                elif 'back' in response or 'end' in response or 'exit' in response or 'no' in response or response == '0':
+                    break
+                else:
+                    doNotUnderstand()
+
+        elif 'scatter' in response or response == '2':
+            x_axis_boolean = True
+            while x_axis_boolean:
+                print('\nWhat column do you want the x axis to be?')
+                print('(1)To see all column names, just let me know')
+                print('(0) Go back')
+                x_axis = getInput()
+                columnNames = getDataColumnNames(df)
+                
+                if x_axis in columnNames:
+                    while True:
+                        print('\nWhat column do you want the y axis to be?') 
+                        print('(1) To see all column names, just let me know')
+                        print('(0) Go back')
+                        y_axis = getInput()
+
+                        
+                        if y_axis in columnNames :
+                            print('\nHere is your scatter plot:')
+                            plot(x_axis, y_axis, 'scatter', df)
+                            x_axis_boolean = False
+                            break
+                        elif 'column' in y_axis or 'column name' in y_axis or y_axis == '1':
+                            print(columnNames)
+                        elif 'back' in y_axis or 'end' in y_axis or 'exit' in y_axis or 'no' in y_axis or y_axis == '0':
+                            break
+                        else:
+                            doNotUnderstand()
+                elif 'column' in x_axis or 'name' in x_axis or x_axis == '1':
+                    print(columnNames)
+                elif 'back' in x_axis or 'end' in x_axis or 'exit' in x_axis or 'no' in x_axis or x_axis == '0':
+                    break
+                else:
+                    doNotUnderstand()
+                    
+                    
+        elif 'line' in response or response == '3':
+            x_axis_boolean = True
+            while x_axis_boolean:
+                print('\nWhat column do you want the x axis to be?')
+                print('(1) To see all column names, just let me know')
+                print('(0) Go back')
+                x_axis = getInput()
+                columnNames = getDataColumnNames(df)
+                
+                try:
+                    is_int(int(df[x_axis][0]))
+                    print('\nThe column selected for the x axis should not contain numbers')
+                except:
+                    if x_axis in columnNames:
+                        while True:
+                            print('\nWhat column do you want the y axis to be?')
+                            print('(1) To see all column names, just let me know')
+                            print('(0) Go back')
+                            y_axis = getInput()
+                            
+                            if y_axis in columnNames:
+                         
+                            
+                                try:
+                                    int(df[y_axis][0])
+                                    print('\nHere is your line chart:')
+                                    plot(x_axis, y_axis, 'line', df)
+                                    x_axis_boolean = False
+                                    break
+                                           
+                                except:
+                                    print('\nThe column selected for the y_axis does not contain numbers')
+                            
+                                
+                            elif 'column' in y_axis or 'column name' in y_axis or y_axis == '1':
+                                print(columnNames)
+                            elif 'back' in y_axis or 'end' in y_axis or 'exit' in y_axis or 'no' in y_axis or y_axis == '0':
+                                break
+                            else:
+                                doNotUnderstand()
+                 
+                    elif 'column' in x_axis or 'name' in x_axis or x_axis == '1':
+                        print(columnNames)
+                    elif 'back' in x_axis or 'end' in x_axis or 'exit' in x_axis or 'no' in x_axis or x_axis == '0':
+                        break
+                    else:
+                        doNotUnderstand()
+        elif 'bar' in response or response == '4':
+            x_axis_boolean = True
+            while x_axis_boolean:
+                print('\nWhat column do you want the x axis to be?')
+                print('(1) To see all column names, just let me know')
+                print('(0) Go back')
+                x_axis = getInput()
+                columnNames = getDataColumnNames(df)
+                
+                try:
+                    is_int(int(df[x_axis][0]))
+                    print('\nThe column selected for the x axis should not contain numbers')
+                except:
+                    if x_axis in columnNames:
+                        while True:
+                            print('\nWhat column do you want the y axis to be? To see all column names, just let me know')
+                            print('(1) To see all column names, just let me know')
+                            print('(0) Go back')
+                            y_axis = getInput()
+    
+                            
+                            if y_axis in columnNames:
+                                print('\nHere is your bar chart:')
+                                plot(x_axis, y_axis, 'bar', df)
+                                x_axis_boolean = False
+                                break
+                            elif 'column' in y_axis or 'column name' in y_axis or y_axis == '1':
+                                print(columnNames)
+                            elif 'back' in y_axis or 'end' in y_axis or 'exit' in y_axis or 'no' in y_axis or y_axis == '0':
+                                break
+                            else:
+                                doNotUnderstand()
+                    elif 'column' in x_axis or 'column name' in x_axis or x_axis == '1':
+                        print(columnNames)
+                    elif 'back' in y_axis or 'end' in y_axis or 'exit' in y_axis or 'no' in y_axis or y_axis == '0':
+                        break
+                    else:
+                        doNotUnderstand()
+        elif 'histogram' in response or response == '5':
+             while True:
+                print('\nWhat column do you want the histogram to display?')
+                print('(1) To see all column names, just let me know')
+                print('(0) Go back')
+                response = getInput()
+                columnNames = getDataColumnNames(df)
+               
+                if 'column' in response or response == '1':
+                    print(columnNames)
+                elif response in columnNames:
+                    if type(df[response][0]) != str:
+                        print('\nHere is your histogram:')
+                        plotHistogram(response, df)
+                        break
+                    else:
+                        print('\nPlease choose a column that has a numerical data type.')
+                else:
+                    print('\nThe column inputted does not exist in the dataframe')
+        elif 'back' in response or 'end' in response or 'exit' in response or 'no' in response or response == '0':
+            break
+        else:
+            doNotUnderstand()
                 
                 
                 

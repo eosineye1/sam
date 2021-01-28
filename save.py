@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jan 25 21:01:06 2021
+
+@author: User
+"""
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -153,49 +160,48 @@ from tkinter import *
 
 def send():
     while True:
-        response = EntryBox.get("1.0",'end-1c').strip()
-        print(response)
-        EntryBox.delete("0.0",END)
-        
-        #Options to get a sample of the data
-        
-        #Option to clean data
-        '''if 'clean' in response or response == '1':
-            print('Clean data')
-        
-        #Option to get a sample of data
-        elif 'sample' in response or response == '2':
-            runSample(df)
-                 
-        #Option to get length of datafram and/or column(s)
-        elif 'length' in response or response == '3':
-            runLength(df)
-        
-        #Options to create a chart from the data
-        elif 'chart' in response or 'plot' in response or 'graph' in response or response == '4':
-            runGraph(df)
-        
-        #Option to get column(s) from dataframe
-        elif 'column' in response or response == '5':
-            runColumn()
-        
-        #Option to get rows from dataframe
-        elif 'row' in response or response == '6':
-            print('rows')
-            #runRow()
-               
-        #Option to describe the data in the dataframe
-        elif 'describe' in response or 'descriptive' in response or 'statistic' in response or response == '7':
-            print(df.describe())
-        
-        #Go Back
-        elif 'back' in response or 'end' in response or 'exit' in response or 'no' in response or response == '0':
-            print('Exiting MIDAC. See you later!')
-            break
-        
-        #Try again
-        else:
-            doNotUnderstand()'''
+    response = EntryBox.get("1.0",'end-1c').strip()
+    EntryBox.delete("0.0",END)
+    
+    #Options to get a sample of the data
+    
+    #Option to clean data
+    if 'clean' in response or response == '1':
+        print('Clean data')
+    
+    #Option to get a sample of data
+    elif 'sample' in response or response == '2':
+        runSample(df)
+             
+    #Option to get length of datafram and/or column(s)
+    elif 'length' in response or response == '3':
+        runLength(df)
+    
+    #Options to create a chart from the data
+    elif 'chart' in response or 'plot' in response or 'graph' in response or response == '4':
+        runGraph(df)
+    
+    #Option to get column(s) from dataframe
+    elif 'column' in response or response == '5':
+        runColumn()
+    
+    #Option to get rows from dataframe
+    elif 'row' in response or response == '6':
+        print('rows')
+        #runRow()
+           
+    #Option to describe the data in the dataframe
+    elif 'describe' in response or 'descriptive' in response or 'statistic' in response or response == '7':
+        print(df.describe())
+    
+    #Go Back
+    elif 'back' in response or 'end' in response or 'exit' in response or 'no' in response or response == '0':
+        print('Exiting MIDAC. See you later!')
+        break
+    
+    #Try again
+    else:
+        doNotUnderstand()
     
 def botResponse(msg):
     ChatLog.config(state=NORMAL)
