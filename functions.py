@@ -5,9 +5,7 @@ Created on Tue Jan 19 21:40:55 2021
 
 @author: eniolaosineye
 """
-
-import pandas as pd
-
+import streamlit as st
 
 def getInput():
     return input().strip()
@@ -18,16 +16,7 @@ def welcome():
 def doNotUnderstand():
     print('\nI did not understand. Please choose from the options below')
     
-def mainOptions():
-    print('\nThese are the main things I can do for you:')
-    print('(1) Clean data')
-    print('(2) Get a sample of the data')
-    print('(3) Get size of data')
-    print('(4) Create a chart')
-    print('(5) Select column(s)')
-    print('(6) Select row(s)')
-    print('(7) Perform Descriptive Statistics')
-    print('(0) Exit MIDAC')
+
    
 def sampleOptions():
     print('\nSample options:')
@@ -129,9 +118,10 @@ def getDataColumnNames(df):
 #creates a chart
 #scatter, line, bar
 def plot(x_axis, y_axis, kindOfGraph, df):
-    import matplotlib.pyplot as plt
-    df.plot(x =x_axis, y=y_axis, kind =kindOfGraph)
-    plt.show()
+    #import matplotlib.pyplot as plt
+    st.line_chart(df['x_axis']);
+    #df.plot(x =x_axis, y=y_axis, kind =kindOfGraph)
+    #plt.show()
 
 #creates a pie chart
 def plotPieChart(name, width, height, df):
@@ -309,7 +299,8 @@ def runGraph(df):
                                 try:
                                     int(df[y_axis][0])
                                     print('\nHere is your line chart:')
-                                    plot(x_axis, y_axis, 'line', df)
+                                    #plot(x_axis, y_axis, 'line', df)
+                                    
                                     x_axis_boolean = False
                                     break
                                            
@@ -626,3 +617,233 @@ def runColumn(df):
             break
         else:
             doNotUnderstand()
+            
+            
+
+            
+def displayStatistics(func, column, trigger, df):
+    try:
+        st.write('The ', trigger, ' of ', column, ' is: ', func(column, df))
+            
+    except:
+        st.write('The column you choice does not exist in the dataframe')
+            
+def displayColumns(listOfColumnNames, st, df):
+    count = 1
+    st.sidebar.markdown('These are the column names in the dataframe')
+    for name in listOfColumnNames:
+         try:
+             int(df[name][0])
+             st.sidebar.write(count,') ', name)
+             count += 1
+         except:
+             pass
+    
+
+def plotGraph(func, column, st, df):
+    try:
+        func(df[column])
+       
+    except:
+        st.write('The column you choice does not exist in the dataframe')
+        
+
+def displayImageAndTitle(st):
+    from PIL import Image
+    logo = Image.open('assets/logo/logo.png')
+    st.image(logo ,width=200)   
+    st.title("MIDAC")
+    st.sidebar.title("MIDAC")
+    st.sidebar.markdown("Please click on an options below:")
+        
+
+def welcomeText(st):
+    st.header('Hello, *World!* :sunglasses:')
+    st.subheader("I'm MIDAC. I am here to help you analyze data quickly and derive information to aid in small business descisions.")
+    st.subheader("To get started, just select *start* from the selecbox is the side bar on the left.")
+    st.subheader("Have *fun,* \nEniola Osineye :smile:") 
+
+def describeData(st, df, listOfColumnNames):
+    
+    import pandas as pd
+    select = st.sidebar.selectbox('Select an option', ['Sum', 'Quartile','Median', 'Lowest', 'Highest', 'Mean', 'Variance', 'Standard Deviation', 'Comprehensive'])   
+    
+    
+    options = []
+    for name in listOfColumnNames:
+       
+        try: 
+            int(df[name][0])
+            options.append(name)
+        except:
+            pass
+    
+    if select == 'Sum':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        
+        displayStatistics(getSumOfColumn, columnNames, 'sum', df)
+        
+    elif select == 'Quartile':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        st.write('The quartiles of ', columnNames, ' is:')
+        s = getQuantileOfColumn(columnNames, df)
+        s.index = ['1st', '2nd', '3rd', '4th']
+        st.write(s)
+        
+    elif select == 'Median':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        displayStatistics(getMedianOfColumn, columnNames, 'median', df)
+            
+    elif select == 'Lowest':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        displayStatistics(getMinOfColumn, columnNames, 'lowest', df)
+        select2 = st.sidebar.selectbox('Show record(s)', ['No', 'Yes',])  
+        
+        if select2 == 'Yes':
+            size = st.number_input('Enter the sample size', min_value=1, step=1, max_value=len(df))
+            smallest = df[columnNames].nsmallest(size)
+            
+            select3 = st.sidebar.selectbox('Minimal or Whole', ['Minimal', 'Whole'])
+            
+            if select3 == 'Minimal':
+                st.write('The lowest records by ', columnNames, ' are: ', smallest)
+            
+            elif select3 == 'Whole':
+                frames = []
+                for row in smallest:
+                    frames.append(df.loc[df[columnNames] == row])
+                
+                result = pd.concat(frames)
+                st.write('The lowest records by ', columnNames, ' are: ')
+                st.dataframe(result)
+                  
+    
+    elif select == 'Highest':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        displayStatistics(getMaxOfColumn, columnNames, 'highest', df)
+        select2 = st.sidebar.selectbox('Show records', ['No', 'Yes',])  
+      
+        if select2 == 'Yes':
+            size = st.number_input('Enter the sample size', min_value=1, step=1, max_value=len(df))
+            largest = df[columnNames].nlargest(size)
+            
+            select3 = st.sidebar.selectbox('Minimal or Whole', ['Minimal', 'Whole'])
+            
+            if select3 == 'Minimal':
+                st.write('The highest records by ', columnNames, ' are: ', largest)
+            
+            elif select3 == 'Whole':
+                frames = []
+                for row in largest:
+                    frames.append(df.loc[df[columnNames] == row])
+                
+                result = pd.concat(frames)
+                st.write('The highest records by ', columnNames, ' are: ')
+                st.dataframe(result)
+        
+    
+    elif select == 'Mean':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        displayStatistics(getMeanOfColumn, columnNames, 'mean', df)
+
+    elif select == 'Variance':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        displayStatistics(getVarOfColumn, columnNames,  'variance', df)
+        
+    elif select == 'Standard Deviation':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        displayStatistics(getStdOfColumn, columnNames, 'standard deviation', df)
+
+    elif select == 'Comprehensive':
+        columnNames = st.sidebar.selectbox('Column Names', options)
+        st.write(df[columnNames].describe())
+                  
+   
+    
+def lengthOption(st, listOfColumnNames, df):
+    options = ['All (length for all columns)']
+    
+    for name in listOfColumnNames:
+        options.append(name)
+    
+    columnNames = st.sidebar.selectbox('Column Names', options)
+
+    if columnNames == 'All (length for all columns)':
+        st.write('The length of the whole dataframe is: ', len(df))
+    else:
+        st.write('The length of column ', columnNames, ' in the dataframe is: ', getLength(columnNames, df))
+
+def graphOption(st, listOfColumnNames, df):
+    select = st.sidebar.selectbox('Pick a graph', ['Area Chart', 'Line Chart', 'Bar Chart'])
+     
+    options = []
+    for name in listOfColumnNames:
+        try: 
+            int(df[name][0])
+            options.append(name)
+        except:
+            pass
+    
+    columnNames = st.sidebar.selectbox('Column Names', options)
+        
+    if select == 'Area Chart':
+        st.write('Select the column you want the area chart to display')
+        plotGraph(st.area_chart, columnNames, st, df)
+        
+    elif select == 'Line Chart':
+        st.write('Select the column you want the line chart to display')
+        plotGraph(st.line_chart, columnNames, st, df)
+    
+    elif select == 'Bar Chart':
+        st.write('Select the column you want the bar chart to display')
+        plotGraph(st.bar_chart, columnNames, st, df)
+            
+        
+def sampleOption(df, st):
+    sampleSelect = st.sidebar.selectbox('Whole or Sample', ['Sample for dataframe', 'Whole dataframe'])
+    if sampleSelect == 'Sample for dataframe':
+        size = st.number_input('Enter the sample size', min_value=1, step=1, max_value=len(df))
+    
+        sampleSelect2 = st.sidebar.selectbox('Sample', ['Sample from top', 'Sample from bottom', 'Random sample'])
+        if sampleSelect2 == 'Sample from top':
+           st.write('Here is a sample of ', size,' from the top')
+           st.dataframe(df.head(size), height=450)
+        elif sampleSelect2 == 'Sample from bottom':
+           st.write('Here is a sample of ', size,' from the bottom')
+           st.dataframe(df.tail(size), height=450)
+        elif sampleSelect2 == 'Random sample':
+           st.write('Here is a random sample of ', size)
+           st.dataframe(df.sample(size), height=450)        
+          
+    elif sampleSelect == 'Whole dataframe':
+        st.write('Here is the whole dataframe')
+        st.dataframe(df, height=580)
+        
+def getSubheader(st):
+    st.subheader("File has been successfully added.")
+    st.subheader("Select yes to begin MIDAC")
+    
+def author():
+    from PIL import Image
+    import webbrowser
+
+    image = Image.open('assets/eniola.jpeg')
+    st.image(image ,width=200, caption="Author: Eniola Osineye")
+    st.subheader('Hi There!')
+    st.subheader('My name is Eniola Osineye and I am currently a computer science senior at Walsh University and a future software engineer and data analyst. This is MIDAC, it is my data analytics minor senior project for the CS398 Data Analytics Practicum class.')
+    st.subheader('The aim of MIDAC is to help in small business decisions by utilizing data to drive those decisions.')
+    st.subheader('*Problem*: Over my years as a data analytics minor, I realised that to analyze data, one must have a basic knowledge of data analytics tools such as excel and/or python/R. However, most business manager may not have the knowledge needed to operate these tools effectively and may require a data analyst. However, some business decisions are minor/small and do not utiize the full capacity of the data analyst. That\'s where MIDAC comes in.')
+    st.subheader('*Solution*: MIDAC aims to allow managers to quickly generate visual represntaion and information from data which can be used to drive business decisions. Moreover, MIDAC is fast, efficent, and user-friendly, which gives everyone the ability to be a data analyst in seconds.')
+    st.subheader("Have *fun* :sunglasses: \nEniola Osineye")
+    
+    linkedin = 'https://www.linkedin.com/in/eniola-osineye-68480b146/'
+    
+    if st.button('My portfolio'):
+        webbrowser.open_new_tab('http://www.osineye.com')
+
+   
+    if st.button('Connect on LinkedIn'):
+        webbrowser.open_new_tab(linkedin)
+        
+    st.button('Connect by email: osineye70@gmail.com')
+    
