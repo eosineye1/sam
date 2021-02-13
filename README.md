@@ -20,8 +20,9 @@ MIDAC aims to allow managers to quickly generate visual represntaion and informa
 4. Run in terminal ```pip install streamlit``` 
 5. Run in terminal ```pip install Image``` 
 6. Run in terminal ```pip install pandas```
-7. Run in terminal: ```streamlit run app.py```
-8. Navigate to [localhost:8501](http://localhost:8501/)
+7. Run in terminal ```pip install altair```
+8. Run in terminal: ```streamlit run app.py```
+9. Navigate to [localhost:8501](http://localhost:8501/)
 
 ### What's included
 
