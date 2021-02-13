@@ -16,8 +16,32 @@ import streamlit as st
 # Import pandas library for datafram
 import pandas as pd
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+import altair as alt
+
+
 #df = df.set_index(df[listOfColumnNames[0]])
 #df.drop([listOfColumnNames[0]], inplace=True, axis=1)
+
+def createRecord(df, st):
+    newRecord = {}
+                        
+    for x in getDataColumnNames(df):
+        try:
+            int(df[x][0])
+            inputBox = st.number_input('Enter value for {}'.format(x), step=0.5)
+        except:
+            inputBox = st.text_input('Enter value for {}'.format(x))
+
+        newRecord[x] = inputBox
+
+    if st.button('Add record'):
+        df = df.append(newRecord, ignore_index=True)
+        st.write('Record has been added successfully.')
+
 
 # Display Walsh logo and title
 displayImageAndTitle(st)
@@ -31,7 +55,10 @@ if helpOptions == 'Welcome':
     
 # Start option    
 elif helpOptions == 'Start':
-    uploaded_file = st.sidebar.file_uploader("Choose a file")
+    try:
+        uploaded_file = st.sidebar.file_uploader("Choose a file")
+    except Exception as e:
+        st.write(e)
     if uploaded_file is not None:
         try:
             df = pd.read_csv(uploaded_file)
@@ -68,35 +95,36 @@ elif helpOptions == 'Start':
             
             elif start == 'Yes':
                 
-                
                 mainOptions =  st.sidebar.selectbox('Main Options', ['Get Sample', 'Get Length', 'Draw Graph', 'Describe Data'])
             
                 if mainOptions == 'Get Sample':
                     try: 
                         sampleOption(df, st)
                     except:
-                        st.write('Opps something went wrong 🥺')
+                        st.warning('Opps something went wrong 🥺')
                     
                 elif mainOptions == 'Get Length':
                     try:
                         lengthOption(st, listOfColumnNames, df)
                     except:
-                        st.write('Opps something went wrong 🥺')
+                        st.warning('Opps something went wrong 🥺')
     
                 elif mainOptions == 'Draw Graph':
                     try:
-                        graphOption(st, listOfColumnNames, df)
-                    except:
-                        st.write('Opps something went wrong 🥺')
+                        graphOption(st, listOfColumnNames, df, indexColumn)
+                    except Exception as e:
+                        st.write(e)
+                        st.warning('Opps something went wrong 🥺')
                 
                 elif mainOptions == 'Describe Data':
                     try: 
                         describeData(st, df, listOfColumnNames)
                     except:
-                        st.write('Opps something went wrong 🥺')
-                    
-        except:
-            st.write('File upload failed. The file must be a csv file less than 200MB')
+                        st.warning('Opps something went wrong 🥺')
+                
+        except Exception as e:
+            st.warning('File upload failed. The file must be a csv file less than 200MB')
+            
           
 # Help option selected
 elif helpOptions == 'Help':
