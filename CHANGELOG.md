@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.3.0] 2021-02-14
+### Changes
+- changed name to SAM
+- updated Help section and added videos
+
 ## [1.2.0] 2021-02-13
 ### Changes
 - update to Streamlit framework

@@ -7,8 +7,8 @@ Created on Tue Jan 19 21:25:36 2021
 """
 
 # Imports from function.py
-from functions import graphOption, sampleOption, getSubheader, author,  displayImageAndTitle
-from functions import welcomeText, lengthOption, getDataColumnNames, describeData
+from functions import graphOption, sampleOption, getSubheader, author,  displayImageAndTitle, getHelpDetails
+from functions import welcomeText, lengthOption, getDataColumnNames, describeData, showVideo
 
 # Import streamlit library
 import streamlit as st
@@ -23,8 +23,6 @@ import numpy as np
 import altair as alt
 
 
-#df = df.set_index(df[listOfColumnNames[0]])
-#df.drop([listOfColumnNames[0]], inplace=True, axis=1)
 
 def createRecord(df, st):
     newRecord = {}
@@ -47,7 +45,7 @@ def createRecord(df, st):
 displayImageAndTitle(st)
 
 # Main menu options
-helpOptions = st.sidebar.selectbox('Select start to start Midac', ['Welcome', 'Start', 'Help', 'Author'])
+helpOptions = st.sidebar.selectbox('Select start to start SAM', ['Welcome', 'Start', 'Help', 'Author'])
 
 # Welcome option
 if helpOptions == 'Welcome':
@@ -128,7 +126,7 @@ elif helpOptions == 'Start':
           
 # Help option selected
 elif helpOptions == 'Help':
-    pass
+    getHelpDetails(st)
 
 # Author option selected
 elif helpOptions == 'Author':
