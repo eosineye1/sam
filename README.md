@@ -1,4 +1,4 @@
-# [SAM] [![version][version-badge]][CHANGELOG]
+# SAM [![version][version-badge]][CHANGELOG]
 
 ![alt text](https://github.com/eosineye1/sam/blob/main/assets/samimage.png? "SAM Start Page")
 
