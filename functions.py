@@ -312,7 +312,7 @@ def graphOption(st, listOfColumnNames, df, indexColumn):
             st.write('Select the column you want the area chart to display')
             st.write('')
             st.write('Chart:')
-            plotGraph(st.area_chart, columnNames, st, new_df[0:size])
+            plotGraph(st.area_chart, columnNames, st, df)
         
     # Display line chart
     elif select == 'Line Chart':
@@ -353,7 +353,7 @@ def graphOption(st, listOfColumnNames, df, indexColumn):
             st.write('Select the column you want the line chart to display')
             st.write('')
             st.write('Chart:')
-            plotGraph(st.line_chart, columnNames, st, df[0:size])
+            plotGraph(st.line_chart, columnNames, st, df)
     
     # Display bar chart
     elif select == 'Bar Chart':
