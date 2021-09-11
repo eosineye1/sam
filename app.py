@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 19 21:25:36 2021
-
-@author: eniolaosineye
-"""
-
 # Imports from function.py
 from functions import graphOption, sampleOption, getSubheader, author,  displayImageAndTitle, getHelpDetails
 from functions import welcomeText, lengthOption, getDataColumnNames, describeData, showVideo
