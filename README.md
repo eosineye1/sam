@@ -1,6 +1,10 @@
 # SAM [![version][version-badge]][CHANGELOG]
+---
+[![Run on Ainize](https://ainize.ai/images/run_on_ainize_button.svg)](https://ainize.web.app/redirect?git_repo=https://github.com/eosineye1/sam)
 
-![alt text](https://github.com/eosineye1/sam/blob/main/assets/samimage.png? "SAM Start Page")
+Github: [SAM](https://github.com/eosineye1/sam)
+
+Model: [Simple Analysis Machine](https://ainize.ai/eosineye1/sam?branch=main)
 
 ## Aim
 The aim of SAM is to help in small business decisions by utilizing data to drive those decisions.
@@ -23,6 +27,12 @@ SAM aims to allow managers to quickly generate visual represntaion and informati
 7. Run in terminal ```pip install altair```
 8. Run in terminal: ```streamlit run app.py```
 9. Navigate to [localhost:8501](http://localhost:8501/)
+
+endpoint : [On Ainize](https://main-sam-eosineye1.endpoint.ainize.ai/)
+
+### Sample datasets
+
+You can find sample datasets under the datasets directory.
 
 ### What's included
 
@@ -55,6 +65,8 @@ SAM
 └── README.md
 ```
 
+
+
 ## Useful Links
 
 Streamlit: <https://www.streamlit.io/>
@@ -69,5 +81,4 @@ Eniola's Portfolio: <http://osineye.com>
 
 [CHANGELOG]: ./CHANGELOG.md
 [version-badge]: https://img.shields.io/badge/version-1.3.0-blue.svg
-
 

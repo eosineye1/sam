@@ -611,11 +611,9 @@ def author():
     image = Image.open('assets/eniola.jpeg')
     st.image(image, width=200, caption="Author: Eniola Osineye")
     st.subheader('Hi There!')
-    st.subheader('My name is Eniola Osineye and I am currently a computer science senior at Walsh University and a future software engineer and data analyst. This is SAM(simple analysis machine), it is my data analytics minor senior project for the CS398 Data Analytics Practicum class.')
+    st.subheader('My name is Eniola Osineye and I am currently a computer science graduate and software engineer. This is SAM(simple analysis machine).')
     st.subheader(
         'The aim of SAM is to help in small business decisions by utilizing data to drive those decisions.')
-    st.subheader('*Problem*: Over my years as a data analytics minor, I realised that to analyze data, one must have a basic knowledge of data analytics tools such as excel and/or python/R. However, most business manager may not have the knowledge needed to operate these tools effectively and may require a data analyst. However, some business decisions are minor/small and do not utiize the full capacity of the data analyst. That\'s SAM comes in.')
-    st.subheader('*Solution*: SAM aims to allow managers to quickly generate visual represntaion and information from data which can be used to drive business decisions. Moreover, SAM is fast, efficent, and user-friendly, which gives everyone the ability to be a data analyst in seconds.')
     st.subheader("Have *fun* :sunglasses: \nEniola Osineye")
 
     linkedin = 'https://www.linkedin.com/in/eniola-osineye-68480b146/'

@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 @author: eniolaosineye
 """
 
+=======
+>>>>>>> 544f0caeefb332320bce82bc53250aa998cd273a
 # Imports from function.py
 from functions import graphOption, sampleOption, getSubheader, author,  displayImageAndTitle, getHelpDetails
 from functions import welcomeText, lengthOption, getDataColumnNames, describeData, showVideo

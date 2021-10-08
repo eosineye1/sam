@@ -1,5 +1,5 @@
-FROM eosineye1/sam:1
-WORKDIR /app
+FROM python:3.7
+EXPOSE 8501
 RUN pip3 install streamlit
 RUN python -m pip install -U matplotlib
 RUN pip3 install Image
