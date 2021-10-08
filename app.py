@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jan 19 21:25:36 2021
-
 @author: eniolaosineye
 """
 
@@ -23,14 +21,14 @@ import numpy as np
 import altair as alt
 
 
-
 def createRecord(df, st):
     newRecord = {}
-                        
+
     for x in getDataColumnNames(df):
         try:
             int(df[x][0])
-            inputBox = st.number_input('Enter value for {}'.format(x), step=0.5)
+            inputBox = st.number_input(
+                'Enter value for {}'.format(x), step=0.5)
         except:
             inputBox = st.text_input('Enter value for {}'.format(x))
 
@@ -45,13 +43,14 @@ def createRecord(df, st):
 displayImageAndTitle(st)
 
 # Main menu options
-helpOptions = st.sidebar.selectbox('Select start to start SAM', ['Welcome', 'Start', 'Help', 'Author'])
+helpOptions = st.sidebar.selectbox('Select start to start SAM', [
+                                   'Welcome', 'Start', 'Help', 'Author'])
 
 # Welcome option
 if helpOptions == 'Welcome':
     welcomeText(st)
-    
-# Start option    
+
+# Start option
 elif helpOptions == 'Start':
     try:
         uploaded_file = st.sidebar.file_uploader("Choose a file")
@@ -67,63 +66,66 @@ elif helpOptions == 'Start':
             for col in df.columns:
                 if df[col].is_unique:
                     uniqueColumns.append(col)
-                    
-            indexColumn = st.sidebar.selectbox('Set Index from unique columns', uniqueColumns)
-            
+
+            indexColumn = st.sidebar.selectbox(
+                'Set Index from unique columns', uniqueColumns)
+
             if indexColumn != 'None':
                 df = df.set_index(df[indexColumn])
                 options = []
                 for name in listOfColumnNames:
-                    try: 
+                    try:
                         int(df[name][0])
                         options.append(name)
                     except:
                         pass
                 if len(options) == 0:
-                    st.subheader('This index is not recommended as it may affect some of my functionalities.')
-                
+                    st.subheader(
+                        'This index is not recommended as it may affect some of my functionalities.')
+
                 df.drop([indexColumn], inplace=True, axis=1)
             elif indexColumn == 'None':
                 df.reset_index()
                 df.index = [x for x in range(len(df))]
-            
-            
+
             if start == 'No':
                 getSubheader(st)
-            
+
             elif start == 'Yes':
-                
-                mainOptions =  st.sidebar.selectbox('Main Options', ['Get Sample', 'Get Length', 'Draw Graph', 'Describe Data'])
-            
+
+                mainOptions = st.sidebar.selectbox(
+                    'Main Options', ['Get Sample', 'Get Length', 'Draw Graph', 'Describe Data'])
+
                 if mainOptions == 'Get Sample':
-                    try: 
+                    try:
                         sampleOption(df, st)
                     except:
                         st.warning('Opps something went wrong 🥺')
-                    
+
                 elif mainOptions == 'Get Length':
                     try:
                         lengthOption(st, listOfColumnNames, df)
                     except:
                         st.warning('Opps something went wrong 🥺')
-    
+
                 elif mainOptions == 'Draw Graph':
                     try:
                         graphOption(st, listOfColumnNames, df, indexColumn)
                     except Exception as e:
                         st.write(e)
                         st.warning('Opps something went wrong 🥺')
-                
+
                 elif mainOptions == 'Describe Data':
-                    try: 
+                    try:
                         describeData(st, df, listOfColumnNames)
                     except:
                         st.warning('Opps something went wrong 🥺')
-                
+
         except Exception as e:
-            st.warning('File upload failed. The file must be a csv file less than 200MB')
-            
-          
+            st.warning(
+                'File upload failed. The file must be a csv file less than 200MB')
+
+
 # Help option selected
 elif helpOptions == 'Help':
     getHelpDetails(st)
@@ -131,7 +133,3 @@ elif helpOptions == 'Help':
 # Author option selected
 elif helpOptions == 'Author':
     author()
-    
-
- 
-            
